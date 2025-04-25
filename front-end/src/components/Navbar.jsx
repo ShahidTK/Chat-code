@@ -26,7 +26,7 @@ const Navbar = () => {
             <div className="flex items-center space-x-6">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="text-black-300 hover:text-white"
+                className="text-black-300 "
               >
                 {darkMode ? (
                   <SunIcon className="h-6 w-6" />
@@ -35,7 +35,7 @@ const Navbar = () => {
                 )}
               </button>
 
-              <button className="text-black-300 hover:text-white">
+              <button className="text-black-300">
                 <Cog6ToothIcon className="h-6 w-6" />
               </button>
               {/* Profile Section */}
