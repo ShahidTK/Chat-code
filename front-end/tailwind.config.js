@@ -1,17 +1,46 @@
-// tailwind.config.js
-module.exports = {
-    content: [
-      "./src/**/*.{js,jsx,ts,tsx}", // Include all JS/JSX/TS/TSX files in the src folder
-      "./public/index.html",        // Include your HTML file
+import daisyui from "daisyui";
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [daisyui],
+  daisyui: {
+    themes: [
+      "light",
+      "dark",
+      "cupcake",
+      "bumblebee",
+      "emerald",
+      "corporate",
+      "synthwave",
+      "retro",
+      "cyberpunk",
+      "valentine",
+      "halloween",
+      "garden",
+      "forest",
+      "aqua",
+      "lofi",
+      "pastel",
+      "fantasy",
+      "wireframe",
+      "black",
+      "luxury",
+      "dracula",
+      "cmyk",
+      "autumn",
+      "business",
+      "acid",
+      "lemonade",
+      "night",
+      "coffee",
+      "winter",
+      "dim",
+      "nord",
+      "sunset",
     ],
-    theme: {
-      extend: {
-        colors: {
-          // Add custom colors if needed
-          amazon: "#232F3E", // Example: Amazon navbar color
-        },
-      },
-    },
-    plugins: [],
-    darkMode: "class", // Enable dark mode using the 'class' strategy
-  };
+  },
+};

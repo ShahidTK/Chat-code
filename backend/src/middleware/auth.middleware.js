@@ -1,35 +1,35 @@
-import asyncHandler from '../utils/asyncHandler.js';
-import ApiError from '../utils/apiError.js';
-import User from '../models/user.model.js';
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import User from "../models/user.model.js"
 
-export const verifyJWT = asyncHandler(async (req, _, next) => {
-    try {
-      const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-  
-      console.log("🔹 Token received:", token); // Debug token
-  
-      if (!token) {
-        console.log("⛔ No token found! Unauthorized request.");
-        return next(new ApiError(401, "Unauthorized request"));
-      }
-  
-      const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      console.log("✅ Decoded Token:", decodedToken); // Debug JWT payload
-  
-      const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
-      console.log("✅ User found in DB:", user); // Debug user
-  
-      if (!user) {
-        console.log("⛔ No matching user found! Invalid token.");
-        return next(new ApiError(401, "Invalid Access Token"));
-      }
-  
-      req.user = user; // Attach user to request
-      next();
-    } catch (error) {
-      console.log("⛔ JWT Verification Error:", error.message);
-      return next(new ApiError(401, error?.message || "Invalid access token"));
+export const protectRoute = async (req, res, next ) => {
+    try{
+        const token= req.cookies.jwt;
+
+        // if no token provided
+         if(!token) {
+            return res.status(400).json({ message: "Unauthorized - No token provided "});
+         }
+         
+         // decode the jwt token using the same secret key
+         const decoded=jwt.verify(token, process.env.JWT_SECRET);
+
+         if(!decoded){
+            return res.status(401).json({ message: "Unauthorized - No token provided"})
+         }
+
+         const user = await User.findById(decoded.userId).select("-password");
+
+         // if no user found
+         if(!user){
+            return res.status(401).json({ message: "No user found"})
+         }
+
+         // add the user to the req body
+         req.user = user
+         next()
+
+    } catch(error){
+        console.log("Error in protectedRoute middleware: ", error.message);
+        res.status(500).json({ message: "Internal server Error"});
     }
-  });
-  
+}

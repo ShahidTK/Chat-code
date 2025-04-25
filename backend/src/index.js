@@ -24,6 +24,9 @@ app.get("/api/email", (req, res) => {
   res.json({ email: "shahidvelom@gmail.com" });
 });
 
+app.use("/api/auth", authRoutes);
+
+
 // Store connected users and shared code
 let users = [];
 let sharedCode = "// Start coding...";

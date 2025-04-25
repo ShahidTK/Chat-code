@@ -1,6 +1,6 @@
 import { Router } from "express";   
-import {loginUser, registerUser,logoutUser, getCurrentUser} from "../controllers/user.controller.js";
-import { verifyJWT } from "../middleware/auth.middleware.js";
+import {loginUser, registerUser,logoutUser, getCurrentUser, checkAuth} from "../controllers/user.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 
 
 const userRouter = Router();
@@ -8,7 +8,9 @@ const userRouter = Router();
 userRouter.post("/signup", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.post("/logout", logoutUser);
-userRouter.route("/getuserid").get(verifyJWT, getCurrentUser)
+userRouter.get("/check", protectRoute, checkAuth);
+userRouter.route("/getuserid").get(protectRoute, getCurrentUser)
+
 
 
 

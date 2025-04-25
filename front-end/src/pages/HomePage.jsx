@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SunIcon, MoonIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { CodeBracketIcon, ChatBubbleLeftIcon, RectangleGroupIcon, VideoCameraIcon } from '@heroicons/react/24/solid';
+import { useAuthStore } from "../store/useAuthStore";
 import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
+  const { login, isLoggingIn } = useAuthStore();
   const [isLogin, setIsLogin] = useState(false);  // Add state to track login status
   const [user, setUser] = useState(null); // To hold user data
 

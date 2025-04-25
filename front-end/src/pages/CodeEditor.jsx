@@ -47,6 +47,7 @@ const CodeEditor = () => {
   return (
     <>
     <Navbar/>
+    <h1>Hello code Editor</h1>
    <div className="pt-16 px-4 h-100vh overflow-y-auto">
     <div className="p-4 flex justify-between items-center">
       <select

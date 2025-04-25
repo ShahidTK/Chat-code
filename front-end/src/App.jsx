@@ -1,37 +1,52 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import HomePage2 from "./pages/HomePage2";
-// import WhiteBoard from "./pages/WhiteBoard";
-import VideoCall from "./pages/VideoCall";
-import CodeEditor from "./pages/CodeEditor";
-import Chat from "./pages/Chat";
+import { use, useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Navbar from './components/Navbar.jsx';
+import HomePage from './pages/HomePage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import SignUpPage from './pages/SignUpPage.jsx';
+import CodeEditor from './pages/CodeEditor.jsx';
+import SettingsPage from './pages/SettingsPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 
-const App = () => {
+import {Routes, Route, Navigate} from "react-router-dom";
+import { useAuthStore } from './store/useAuthStore.js';
+import { Loader } from "lucide-react"
+
+
+
+
+function App() {
+  const {authUser, checkAuth, isCheckingAuth} = useAuthStore();
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth]);
+  console.log({authUser});
+
+  // for loading icon
+  if(isCheckingAuth && !authUser) return (
+    <div className='flex items-center justify-center h-screen'>
+      <Loader className='size-10 animate-spin'/>
+    </div>
+  )
+
   return (
-    <Router>
-      <div>
-        <ToastContainer position="top-right" autoClose={3000} />
-        {/* Toast notifications */}
+    <div >
+      <ToastContainer position="bottom-center"  hideProgressBar="false"/>
+      <Navbar/>
+      <Routes>
+        <Route path='/' element={authUser?<HomePage/>: <Navigate to="/login" />} />
+        <Route path='/signup' element={!authUser? <SignUpPage/>: <Navigate to="/" />} />
+        <Route path='/login' element={!authUser? <LoginPage/>: <Navigate to="/" />} />
+        <Route path='/settings' element={<SettingsPage/>} />
+        <Route path='/profile' element={authUser? <ProfilePage/>: <Navigate to="/login" />} />
+        <Route path="/CodeEditor" element={<CodeEditor />} />
+      </Routes>
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/HomePage2" element={<HomePage2 />} />
-          {/* <Route
-            path="/Whiteboard"
-            element={<WhiteBoard room="defaultRoom" username="Guest" />}
-          /> */}
-          <Route path="/VideoCall" element={<VideoCall />} />
-          <Route path="/CodeEditor" element={<CodeEditor />} />
-          <Route path="/Chat" element={<Chat />} />
-        </Routes>
+      
       </div>
-    </Router>
   );
-};
+}
 
 export default App;
