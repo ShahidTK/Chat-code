@@ -1,50 +1,47 @@
-#Mentorship Platform
+# Collaborative Platform
 
-A real-time mentorship platform with live teaching, collaborative coding, whiteboard, and chat for remote learning and teamwork.
+A real-time collaborative platform featuring an interactive code editor and integrated chat system to enhance team-based development and peer learning experiences.
 
-Features:
+## Features:
 
-Live Video & Chat – Real-time communication
+- 💬 **Real-Time Chat** – Instant communication between users for effective collaboration  
+- 🧑‍💻 **Collaborative Code Editor** – Simultaneous coding with syntax highlighting and real-time updates  
+- 🔒 **User Authentication** – Role-based access for developers, mentors, and guests  
+- 💾 **Save & Load Sessions** – Persist coding sessions and chat history for later access  
+- 🚀 **Responsive UI** – Smooth experience across devices
 
-Collaborative Code Editor – Write & edit code together
-
-Shared Whiteboard – Draw and brainstorm live
-
-User Authentication – Mentor, Student, and Collaborator roles
-
-Save & Export – Store code, notes, and whiteboard content
-
-
-
-<h1 align="center">Devjam Readme Template</h1>
-<p align="center">
-</p>
-<a href="https://weekendofcode.computercodingclub.in/"> <img src="https://i.postimg.cc/njCM24kx/woc.jpg" height=30px> </a>
+---
 
 ## Introduction:
-  A real-time mentorship platform with live teaching, collaborative coding, whiteboard, and chat for remote learning and teamwork.
+A real-time collaborative platform designed to bring developers and teams together through shared coding environments and seamless communication tools.
 
-  
+---
+
 ## Table of Contents:
 
+- [Features](#features)  
+- [Introduction](#introduction)  
+- [Technology Stack](#technology-stack)  
+- [Contributors](#contributors)
+
+---
+
 ## Technology Stack:
-  1) MongoDB
-  2) Express.js
-  3) React.js
-  4) Node.js
-  
+
+1. **MongoDB** – For storing user data and session history  
+2. **Express.js** – Backend framework  
+3. **React.js** – Frontend library  
+4. **Node.js** – Server environment  
+5. **Socket.IO** – For real-time communication  
+
+---
 
 ## Contributors:
 
-Team Name: semicolon_saviours
-
-* [Muhammad Shahid TK](https://github.com/ShahidTK)
-* [Ashish Ukeiy]
-* [Anubhav Sharma]
-
-
-### Made at:
-
-
-
-<a href="https://weekendofcode.computercodingclub.in/"> <img src="https://i.postimg.cc/Z9fC676j/devjam.jpg" height=30px> </a>
+* [Muhammad Shahid TK](https://github.com/ShahidTK)  
+* [Ashish Ukeiy]  
+* [Anubhav Sharma]  
+* [Ashutosh Pathak]  
+* [Purushottam Kumar]  
+* [Harshit Sahu]  
+* [Sourabh Choudhary]
