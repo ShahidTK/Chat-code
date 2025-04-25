@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const socket = io("http://localhost:8000");
 
@@ -44,36 +45,54 @@ const CodeEditor = () => {
   };
 
   return (
-    <div className="p-4 flex flex-col h-screen">
-      <div className="flex justify-between items-center mb-2">
-        <select value={language} onChange={(e) => setLanguage(e.target.value)} className="p-2 border">
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-          <option value="java">Java</option>
-        </select>
-        <button onClick={handleCompile} className="p-2 bg-blue-500 text-white rounded">Run Code</button>
-      </div>
-
+    <>
+    <Navbar/>
+   <div className="pt-16 px-4 h-100vh overflow-y-auto">
+    <div className="p-4 flex justify-between items-center">
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value)}
+        className="p-2 border"
+      >
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="c">C</option>
+        <option value="cpp">C++</option>
+        <option value="java">Java</option>
+      </select>
+      <button
+        onClick={handleCompile}
+        className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
+      >
+        Run Code
+      </button>
+    </div>
       <div className="flex flex-1">
-        <div className="w-3/4 border">
+        <div className="w-3/5 border-0 rounded">
           <Editor
-            height="80vh"
+            height="75vh"
             theme="vs-dark"
             language={language}
             value={code}
             onChange={handleCodeChange}
           />
         </div>
-        <div className="w-1/4 p-2 border-l">
-          <h3 className="font-bold">Users Online:</h3>
-          <ul>
-            {users.map((user, index) => (
-              <li key={index} className="text-green-500">{user}</li>
-            ))}
-          </ul>
-        </div>
+        <div className="w-2/5 p-2 ml-2 rounded bg-[#1e1e1e]">
+  {/* Title Section */}
+  <div className="bg-white px-3 py-2 rounded">
+    <h3 className="text-center font-bold text-black">Users Online:</h3>
+  </div>
+
+  {/* Users List Section */}
+  <div className="px-3 py-2 mt-2">
+    <ul>
+      {users.map((user, index) => (
+        <li key={index} className="text-green-500">{user}</li>
+      ))}
+    </ul>
+  </div>
+</div>
+
       </div>
 
       <div className="mt-2 p-2 border bg-gray-100">
@@ -81,6 +100,7 @@ const CodeEditor = () => {
         <pre className="bg-black text-white p-2">{output}</pre>
       </div>
     </div>
+    </>
   );
 };
 

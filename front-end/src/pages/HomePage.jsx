@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SunIcon, MoonIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { CodeBracketIcon, ChatBubbleLeftIcon, RectangleGroupIcon, VideoCameraIcon } from '@heroicons/react/24/solid';
+import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -19,98 +20,35 @@ const HomePage = () => {
   //   }
   // }, []);
 
-  const handleLoginClick = () => {
-    console.log("isLogin: ", isLogin)
-    navigate("/login"); // Redirect to the Login Page
-  };
+  
   console.log(user)
   return (
     <div className={`min-h-screen ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
-      {/* Navbar */}
-      <nav className="bg-[#232F3E] fixed w-full z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-      {/* <h1>Home page Login button</h1> */}
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <span className="text-white font-bold text-xl">CollabMentor</span>
-            </div>
-
-            {/* Right Section */}
-            <div className="flex items-center space-x-6">
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="text-gray-300 hover:text-white"
-              >
-                {darkMode ? (
-                  <SunIcon className="h-6 w-6" />
-                ) : (
-                  <MoonIcon className="h-6 w-6" />
-                )}
-              </button>
-
-              <button className="text-gray-300 hover:text-white">
-                <Cog6ToothIcon className="h-6 w-6" />
-              </button>
-              {/* Profile Section */}
-              {isLogin ? (
-                <div className="flex items-center space-x-4">
-                  <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
-                    {/* <span className="text-white text-sm">{user?.name[0]}</span> Show first letter of name */}
-                  </div>
-                 
-                </div>
-              ) : (
-                <button
-                  onClick={handleLoginClick}
-                  className="text-white px-4 py-2 rounded bg-green-600 hover:bg-green-700"
-                >
-                  Log In
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar/> 
 
       {/* Hero Section */}
-      <main className="pt-20 pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="pt-20 pb-12 ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center flex-col items-center">
         <div className="py-5 mb-12 text-center">
-  <h1 className={`text-5xl font-extrabold leading-tight ${darkMode ? "text-gray-100" : "text-gray-900"} mb-4`}>
-    Learn, Code, <br /> & Collaborate in Real-Time!
+  <h1 className={`pt-10 text-7xl font-extrabold leading-tight ${darkMode ? "text-gray-100" : "text-blue-900"} mb-4`}>
+  Code Together. 
+  <br />
+  Build Better.
   </h1>
   <p className={`text-lg ${darkMode ? "text-gray-300" : "text-gray-700"} max-w-3xl mx-auto`}>
     <span className="font-bold text-xl block mb-3">
-      Empowering Mentorship & Team Collaboration
-    </span>
-    Experience interactive learning with <span className="font-bold">live video teaching</span>, 
-a <span className="font-bold">real-time collaborative code editor</span>,  
-and a <span className="font-bold">shared whiteboard</span>. Perfect for mentors, teams, and coding workshops**, our platform  
-    makes collaboration effortless.
+    A real-time collaborative coding platform with an integrated code editor and live chat. Perfect for remote teams, mentors, and peer programmers.    </span>
+   
   </p>
 </div>
-
-
-          {/* Feature Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: CodeBracketIcon, title: "Code Editor", color: "bg-blue-100 dark:bg-blue-900" },
-              { icon: ChatBubbleLeftIcon, title: "Team Chat", color: "bg-green-100 dark:bg-green-900" },
-              { icon: RectangleGroupIcon, title: "Whiteboard", color: "bg-purple-100 dark:bg-purple-900" },
-              { icon: VideoCameraIcon, title: "Video Call", color: "bg-red-100 dark:bg-red-900" },
-            ].map((feature, index) => (
-              <div key={index} className={`${feature.color} p-6 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-xl cursor-pointer`}>
-                <feature.icon className="h-12 w-12 text-gray-800 dark:text-white mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-cenmt-2 text-gray-600 dark:text-gray-300">
+              <div>
+          
+               
+                <button className="bg-green-600 text-xl bold border px-3 py-2 rounded-md shadow-2xl text-white w-auto hover:bg-green-700 cursor-pointer flex items-center justify-center" onClick={() => navigate(`/codeEditor`)}>
                   Start new session
-                </p>
+                </button>
               </div>
-            ))}
-          </div>
+          
         </div>
       </main>
 
@@ -119,7 +57,7 @@ and a <span className="font-bold">shared whiteboard</span>. Perfect for mentors,
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-gray-300">
-              © {new Date().getFullYear()} CollabMentor. All rights reserved.
+              © {new Date().getFullYear()} Code n Chat. All rights reserved.
             </p>
           </div>
         </div>
