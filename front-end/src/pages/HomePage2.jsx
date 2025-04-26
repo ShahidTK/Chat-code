@@ -15,25 +15,11 @@ const HomePage2 = () => {
     if (storedUser) {
       setIsLogin(true);
       fetchUserName();
+      console.log(`user name: ${storedUser}`);
     }
   }, []);
 
-  const fetchUserName = useCallback(async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("/api/v1/users/getuserid", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-
-      setUserName(response.data.data.name);
-    } catch (error) {
-      console.log("❌ Error fetching username:", error.response?.data || error.message);
-    }
-  }, []);
-
+ 
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
