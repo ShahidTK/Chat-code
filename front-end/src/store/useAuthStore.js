@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 // for managing global variables
 export const useAuthStore = create((set) =>({
+  
     authUser: null,
     isSigningUp: false,
     isLoggingIn: false,
@@ -43,7 +44,6 @@ export const useAuthStore = create((set) =>({
           const res = await axiosInstance.post("/auth/login", data);
           set({ authUser: res.data });
           toast.success("Logged in successfully");
-    
           get().connectSocket();
         } catch (error) {
           toast.error(error.response.data.message);
