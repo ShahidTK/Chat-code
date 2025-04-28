@@ -32,7 +32,7 @@ const HomePage = () => {
       <main className="pt-20 pb-12 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center flex-col items-center">
         <div className="py-5 mb-12 text-center">
-  <h1 className={`pt-10 text-7xl font-extrabold leading-tight ${darkMode ? "text-gray-100" : "text-blue-900"} mb-4`}>
+  <h1 className={`text-7xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 bg-clip-text text-transparent pt-10 leading-tight mb-4`}>
   Code Together. 
   <br />
   Build Better.
