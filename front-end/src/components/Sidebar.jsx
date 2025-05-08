@@ -33,14 +33,14 @@ const Sidebar = () => {
           <span className={`font-medium hidden lg:block ${
             theme === 'dark' ? 'text-white' : 'text-gray-800'
           }`}>
-            Online Users
+            Active People
           </span>
         </div>
 
         <div className={`mt-1 hidden lg:block text-xs ${
           theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
         }`}>
-          {onlineUsers.length} {onlineUsers.length === 1 ? "user online" : "users online"}
+          {onlineUsers.length} {onlineUsers.length === 1 ? "person online" : "people"}
         </div>
       </div>
 
@@ -49,7 +49,7 @@ const Sidebar = () => {
           <button
             key={user._id}
             onClick={() => setSelectedUser(user)}
-            className={`w-full p-3 flex items-center gap-3 transition-colors ${
+            className={`w-full p-4 flex items-center gap-4 transition-colors ${
               theme === 'dark' ? 
                 selectedUser?._id === user._id ? 'bg-gray-700' : 'hover:bg-gray-700' : 
                 selectedUser?._id === user._id ? 'bg-gray-100' : 'hover:bg-gray-100'
@@ -59,25 +59,17 @@ const Sidebar = () => {
               <img
                 src={user.profilePic || "/avatar.png"}
                 alt={user.name}
-                className={`size-10 object-cover rounded-full border-2 ${
+                className={`size-14 object-cover rounded-full border-2 ${
                   theme === 'dark' ? 'border-gray-800' : 'border-white'
                 }`}
               />
-              <span className={`absolute bottom-0 right-0 size-2.5 bg-green-500 rounded-full ring-2 ${
-                theme === 'dark' ? 'ring-gray-800' : 'ring-white'
-              }`} />
             </div>
 
             <div className="hidden lg:block text-left min-w-0">
-              <div className={`font-medium truncate ${
+              <div className={`font-medium truncate text-medium ${
                 theme === 'dark' ? 'text-white' : 'text-gray-800'
               }`}>
                 {user.fullName}
-              </div>
-              <div className={`text-xs ${
-                theme === 'dark' ? 'text-green-400' : 'text-green-600'
-              }`}>
-                Online
               </div>
             </div>
           </button>

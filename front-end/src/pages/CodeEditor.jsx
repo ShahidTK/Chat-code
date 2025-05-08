@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import useThemeStore  from "../store/useThemeStore";
+import useThemeStore from "../store/useThemeStore";
 
-const socket = io("http://localhost:8000");
+// Connect to socket server
+const socket = io("http://localhost:5001");
 
 const CodeEditor = () => {
   const { theme } = useThemeStore();
@@ -13,8 +14,7 @@ const CodeEditor = () => {
   const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [fontSize, setFontSize] = useState(14);
-  
-  // Only two themes: light and dark
+
   const editorTheme = theme === 'light' ? 'vs' : 'vs-dark';
 
   const languageOptions = [
@@ -25,19 +25,31 @@ const CodeEditor = () => {
     { value: "java", label: "Java" },
   ];
 
+  // Socket listeners
   useEffect(() => {
-    socket.on("codeUpdate", (newCode) => {
+    socket.on("codeChange", (newCode) => {
       setCode(newCode);
     });
 
+    socket.on("languageChange", (newLang) => {
+      setLanguage(newLang);
+    });
+
     return () => {
-      socket.off("codeUpdate");
+      socket.off("codeChange");
+      socket.off("languageChange");
     };
   }, []);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
-    socket.emit("codeUpdate", newCode);
+    socket.emit("codeChange", newCode);
+  };
+
+  const handleLanguageChange = (e) => {
+    const newLang = e.target.value;
+    setLanguage(newLang);
+    socket.emit("languageChange", newLang);
   };
 
   const handleCompile = async () => {
@@ -58,17 +70,17 @@ const CodeEditor = () => {
 
   return (
     <div className={`h-full flex flex-col ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}`}>
-      {/* Editor Controls */}
+      {/* Controls */}
       <div className={`flex justify-between items-center p-2 border-b ${
         theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-gray-700 bg-gray-800'
       }`}>
         <div className="flex space-x-2">
           <select
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            onChange={handleLanguageChange}
             className={`${
               theme === 'light' ? 'bg-white border-gray-300 text-gray-800' : 'bg-gray-700 border-gray-600 text-gray-200'
-            } border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            } border rounded px-3 py-1 text-sm`}
           >
             {languageOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -82,7 +94,7 @@ const CodeEditor = () => {
             onChange={(e) => setFontSize(Number(e.target.value))}
             className={`${
               theme === 'light' ? 'bg-white border-gray-300 text-gray-800' : 'bg-gray-700 border-gray-600 text-gray-200'
-            } border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            } border rounded px-3 py-1 text-sm`}
           >
             {[12, 13, 14, 15, 16, 17, 18].map((size) => (
               <option key={size} value={size}>
@@ -97,7 +109,7 @@ const CodeEditor = () => {
           disabled={isLoading}
           className={`${
             isLoading ? 'bg-blue-500' : 'bg-blue-600 hover:bg-blue-700'
-          } text-white px-4 py-1 rounded text-sm flex items-center transition-colors`}
+          } text-white px-4 py-1 rounded text-sm flex items-center`}
         >
           {isLoading ? (
             <>
