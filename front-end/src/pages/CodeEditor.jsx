@@ -2,28 +2,36 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
+import useThemeStore  from "../store/useThemeStore";
 
 const socket = io("http://localhost:8000");
 
 const CodeEditor = () => {
+  const { theme } = useThemeStore();
   const [code, setCode] = useState("// Start coding...");
   const [language, setLanguage] = useState("javascript");
   const [output, setOutput] = useState("");
-  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fontSize, setFontSize] = useState(14);
+  
+  // Only two themes: light and dark
+  const editorTheme = theme === 'light' ? 'vs' : 'vs-dark';
+
+  const languageOptions = [
+    { value: "javascript", label: "JavaScript" },
+    { value: "python", label: "Python" },
+    { value: "c", label: "C" },
+    { value: "cpp", label: "C++" },
+    { value: "java", label: "Java" },
+  ];
 
   useEffect(() => {
     socket.on("codeUpdate", (newCode) => {
       setCode(newCode);
     });
 
-    socket.on("userList", (userList) => {
-      setUsers(userList);
-    });
-
     return () => {
       socket.off("codeUpdate");
-      socket.off("userList");
     };
   }, []);
 
@@ -33,75 +41,114 @@ const CodeEditor = () => {
   };
 
   const handleCompile = async () => {
+    setIsLoading(true);
+    setOutput("Running...");
     try {
       const response = await axios.post("https://emkc.org/api/v2/piston/execute", {
         language,
         source: code,
       });
-      setOutput(response.data.run.stdout || response.data.run.stderr);
+      setOutput(response.data.run.stdout || response.data.run.stderr || "No output");
     } catch (error) {
-      setOutput("Compilation Error");
+      setOutput("Error: " + (error.response?.data?.message || "Compilation failed"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <>
-    <Navbar/>
-    <h1>Hello code Editor</h1>
-   <div className="pt-16 px-4 h-100vh overflow-y-auto">
-    <div className="p-4 flex justify-between items-center">
-      <select
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-        className="p-2 border"
-      >
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-        <option value="c">C</option>
-        <option value="cpp">C++</option>
-        <option value="java">Java</option>
-      </select>
-      <button
-        onClick={handleCompile}
-        className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-      >
-        Run Code
-      </button>
-    </div>
-      <div className="flex flex-1">
-        <div className="w-3/5 border-0 rounded">
-          <Editor
-            height="75vh"
-            theme="vs-dark"
-            language={language}
-            value={code}
-            onChange={handleCodeChange}
-          />
+    <div className={`h-full flex flex-col ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}`}>
+      {/* Editor Controls */}
+      <div className={`flex justify-between items-center p-2 border-b ${
+        theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-gray-700 bg-gray-800'
+      }`}>
+        <div className="flex space-x-2">
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className={`${
+              theme === 'light' ? 'bg-white border-gray-300 text-gray-800' : 'bg-gray-700 border-gray-600 text-gray-200'
+            } border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            {languageOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={fontSize}
+            onChange={(e) => setFontSize(Number(e.target.value))}
+            className={`${
+              theme === 'light' ? 'bg-white border-gray-300 text-gray-800' : 'bg-gray-700 border-gray-600 text-gray-200'
+            } border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            {[12, 13, 14, 15, 16, 17, 18].map((size) => (
+              <option key={size} value={size}>
+                {size}px
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="w-2/5 p-2 ml-2 rounded bg-[#1e1e1e]">
-  {/* Title Section */}
-  <div className="bg-white px-3 py-2 rounded">
-    <h3 className="text-center font-bold text-black">Users Online:</h3>
-  </div>
 
-  {/* Users List Section */}
-  <div className="px-3 py-2 mt-2">
-    <ul>
-      {users.map((user, index) => (
-        <li key={index} className="text-green-500">{user}</li>
-      ))}
-    </ul>
-  </div>
-</div>
-
+        <button
+          onClick={handleCompile}
+          disabled={isLoading}
+          className={`${
+            isLoading ? 'bg-blue-500' : 'bg-blue-600 hover:bg-blue-700'
+          } text-white px-4 py-1 rounded text-sm flex items-center transition-colors`}
+        >
+          {isLoading ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Running...
+            </>
+          ) : (
+            "Run Code"
+          )}
+        </button>
       </div>
 
-      <div className="mt-2 p-2 border bg-gray-100">
-        <h3 className="font-bold">Output:</h3>
-        <pre className="bg-black text-white p-2">{output}</pre>
+      {/* Editor */}
+      <div className="flex-1">
+        <Editor
+          height="100%"
+          theme={editorTheme}
+          language={language}
+          value={code}
+          onChange={handleCodeChange}
+          options={{
+            fontSize,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            wordWrap: "on",
+            automaticLayout: true,
+            fontFamily: "'Fira Code', monospace",
+            lineNumbers: "on",
+          }}
+        />
+      </div>
+
+      {/* Output */}
+      <div className={`border-t p-3 ${
+        theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-gray-700 bg-gray-800'
+      }`}>
+        <div className={`font-medium mb-1 ${
+          theme === 'light' ? 'text-gray-800' : 'text-gray-200'
+        }`}>
+          Output:
+        </div>
+        <pre className={`p-2 rounded text-sm overflow-auto max-h-32 font-mono ${
+          theme === 'light' ? 'bg-white text-gray-800' : 'bg-gray-700 text-gray-200'
+        }`}>
+          {output || "Your output will appear here..."}
+        </pre>
       </div>
     </div>
-    </>
   );
 };
 
