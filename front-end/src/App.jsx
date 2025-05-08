@@ -5,8 +5,6 @@ import Navbar from './components/Navbar.jsx';
 import {HomePage, FeatureCard} from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignUpPage from './pages/SignUpPage.jsx';
-import CodeEditor from './pages/CodeEditor.jsx';
-import SettingsPage from './pages/SettingsPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import CodeChat from './pages/CodeChat.jsx';
 
@@ -43,7 +41,7 @@ function App() {
         <Route path='/' element={authUser?<HomePage/>: <Navigate to="/login" />}/>
         <Route path='/signup' element={!authUser? <SignUpPage/>: <Navigate to="/" />} />
         <Route path='/login' element={!authUser? <LoginPage/>: <Navigate to="/" />} />
-        <Route path='/settings' element={<SettingsPage/>} />
+      
         <Route path='/profile' element={authUser? <ProfilePage/>: <Navigate to="/login" />} />
         <Route path="/CodeEditor" element={<CodeChat />} />
 
