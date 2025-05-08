@@ -23,24 +23,20 @@ const CodeChat = () => {
           <CodeEditor />
         </div>
 
-        {/* Right Half: Chat Area - 45% width */}
         <div className="w-[45%] flex">
-          {/* Sidebar - 28% of right half */}
           <div className={`w-[35%] h-full flex flex-col border-r ${
             theme === 'dark' ? 'border-gray-700 bg-gray-800' : 
             theme === 'light' ? 'border-gray-200 bg-white' :
-            'border-gray-200 bg-white' // default
+            'border-gray-200 bg-white' 
           }`}>
             <Sidebar />
           </div>
 
-          {/* Chat Container - 72% of right half with separator */}
           <div className={`w-[65%] flex flex-col relative ${
             theme === 'dark' ? 'bg-gray-900' : 
             theme === 'light' ? 'bg-white' :
-            'bg-white' // default
+            'bg-white' 
           }`}>
-            {/* Separator between sidebar and chat */}
             <div className={`absolute left-0 top-0 bottom-0 w-px ${
               theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
             } z-10`}></div>
