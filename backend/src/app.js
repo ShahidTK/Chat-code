@@ -1,55 +1,42 @@
-import express from "express";
-import dotenv from "dotenv";
-import connectDB from "./db/index.js";
-import cors from "cors";
-import { createServer } from "http";
-import { Server } from "socket.io";
-import userRouter from "./routes/user.routes.js";
-import { configureSocket } from "./socket/socket.js"; // Separate Socket.IO logic
-import errorHandler from "./middleware/errorHandler.js"; // Centralized error handling
+// import express from "express";
+// import dotenv from "dotenv";
+// import cookieParser from "cookie-parser";
+// import cors from "cors";
 
-dotenv.config();
+// import path from "path";
 
-const app = express();
-const server = createServer(app);
+// import { connectDB } from "./lib/db.js";
 
-// Middleware
-app.use(express.json());
-app.use(cors({ origin: process.env.CLIENT_URL || "*" })); // Restrict CORS to specific origin
-app.use(express.urlencoded({ extended: true }));
+// import authRoutes from "./routes/auth.route.js";
+// import messageRoutes from "./routes/message.route.js";
+// import { app, server } from "./lib/socket.js";
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Server is ready!");
-});
+// dotenv.config();
 
-app.use("/api/v1/users", userRouter);
-app.get("/api/email", (req, res) => {
-  res.json({ email: "shahidvelom@gmail.com" });
-});
+// const PORT = process.env.PORT;
+// const __dirname = path.resolve();
 
-// Socket.IO setup
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_URL || "*", // Restrict CORS to specific origin
-    methods: ["GET", "POST"],
-  },
-});
+// app.use(express.json());
+// app.use(cookieParser());
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
 
-configureSocket(io); // Configure Socket.IO logic
+// app.use("/api/auth", authRoutes);
+// app.use("/api/messages", messageRoutes);
 
-// Centralized error handling
-app.use(errorHandler);
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-// Connect to MongoDB and start server
-connectDB()
-  .then(() => {
-    const PORT = process.env.PORT || 5000;
-    server.listen(PORT, () => {
-      console.log(`Server is running at http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("MongoDB connection failed:", err);
-    process.exit(1);
-  });
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+//   });
+// }
+
+// server.listen(PORT, () => {
+//   console.log("server is running on PORT:" + PORT);
+//   connectDB();
+// });
