@@ -45,13 +45,13 @@ const CodeEditor = () => {
     setCode(newCode);
     socket.emit("codeChange", newCode);
   };
-
+//function to change language
   const handleLanguageChange = (e) => {
     const newLang = e.target.value;
     setLanguage(newLang);
     socket.emit("languageChange", newLang);
   };
-
+//function to compile
   const handleCompile = async () => {
     setIsLoading(true);
     setOutput("Running...");
