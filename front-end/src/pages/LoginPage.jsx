@@ -122,7 +122,7 @@ const LoginPage = () => {
                 </button>
               </div>
             </div>
-
+//button for login
             <button 
               type="submit" 
               className={`btn w-full ${
